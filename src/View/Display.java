@@ -5,7 +5,6 @@
  */
 package View;
 
-import Object.Truck;
 import Object.Windmill;
 import Shapes2D.Circle;
 import Shapes2D.Ellipse;
@@ -17,18 +16,23 @@ import Shapes2D.Triangle;
 import Shapes3D.HinhCau;
 import Shapes3D.HinhHop;
 import Shapes3D.HinhNon;
+import View.Coordinate;
+import View.Coordinate3D;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -47,9 +51,8 @@ public class Display extends javax.swing.JFrame {
     private ArrayList<Shape2D> paint2D = new ArrayList<>();
     private Stack<Shape2D> stack = new Stack<>();
     private int size=5; // cỡ nét vẽ
-    private Color color = Color.BLACK;// set màu cơ bản
+    private Color color;// set màu cơ bản
     
-
     // Init Shape2D
     private Line line;
     private Rectangle rect;
@@ -93,6 +96,16 @@ public class Display extends javax.swing.JFrame {
         bg_ = new javax.swing.ButtonGroup();
         bg2D = new javax.swing.ButtonGroup();
         bg3D = new javax.swing.ButtonGroup();
+        dialogTruck = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        tfOX = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        tfOY = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        tfSize = new javax.swing.JTextField();
+        butPaintTruck = new javax.swing.JButton();
         panelDrawing = new javax.swing.JPanel();
         panelDrawingArea = new javax.swing.JPanel();
         panelSetUp = new javax.swing.JPanel();
@@ -111,10 +124,8 @@ public class Display extends javax.swing.JFrame {
         butLine = new javax.swing.JToggleButton();
         butRectangle = new javax.swing.JToggleButton();
         butTriangle = new javax.swing.JToggleButton();
-        butRhomb = new javax.swing.JToggleButton();
         butCircle = new javax.swing.JToggleButton();
         butEllipse = new javax.swing.JToggleButton();
-        but = new javax.swing.JToggleButton();
         but2DPaint = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
@@ -138,6 +149,28 @@ public class Display extends javax.swing.JFrame {
         butCone = new javax.swing.JToggleButton();
         but3DPaint = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
+        panel2D1 = new javax.swing.JPanel();
+        panel2DStart1 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        tf2D_SX1 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        tf2D_SY1 = new javax.swing.JTextField();
+        panel2DEnd1 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        tf2D_EX1 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        tf2D_EY1 = new javax.swing.JTextField();
+        panel2DShape1 = new javax.swing.JPanel();
+        butLine1 = new javax.swing.JToggleButton();
+        butRectangle1 = new javax.swing.JToggleButton();
+        butTriangle1 = new javax.swing.JToggleButton();
+        butRhomb1 = new javax.swing.JToggleButton();
+        butCircle1 = new javax.swing.JToggleButton();
+        butEllipse1 = new javax.swing.JToggleButton();
+        but1 = new javax.swing.JToggleButton();
+        but2DPaint1 = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JSeparator();
+        jSeparator6 = new javax.swing.JSeparator();
         panelOperation = new javax.swing.JPanel();
         butOpenFile = new javax.swing.JButton();
         butSave = new javax.swing.JButton();
@@ -147,19 +180,17 @@ public class Display extends javax.swing.JFrame {
         butSelect = new javax.swing.JButton();
         butMove = new javax.swing.JButton();
         butUndo = new javax.swing.JButton();
-        butPaint = new javax.swing.JButton();
         butErase = new javax.swing.JButton();
         butColour = new javax.swing.JButton();
         cbCustomLine = new javax.swing.JComboBox<>();
-        cbSym = new javax.swing.JComboBox<>();
-        rb2D = new javax.swing.JRadioButton();
-        rb3D = new javax.swing.JRadioButton();
         butRedo = new javax.swing.JButton();
         butClean = new javax.swing.JButton();
+        butDraw1 = new javax.swing.JButton();
         cbCoordinate = new javax.swing.JCheckBox();
         cbGrid = new javax.swing.JCheckBox();
         cbAxis = new javax.swing.JCheckBox();
-        butDraw1 = new javax.swing.JButton();
+        rb2D = new javax.swing.JRadioButton();
+        rb3D = new javax.swing.JRadioButton();
         panelObject = new javax.swing.JPanel();
         butA1 = new javax.swing.JButton();
         butA2 = new javax.swing.JButton();
@@ -167,6 +198,75 @@ public class Display extends javax.swing.JFrame {
         butA3 = new javax.swing.JButton();
         butA4 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Truck", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 15))); // NOI18N
+
+        jLabel15.setText("Point  O");
+
+        jLabel16.setText("X:");
+
+        jLabel17.setText("Y:");
+
+        jLabel18.setText("Size:");
+
+        butPaintTruck.setText("Paint");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(butPaintTruck, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfSize, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(tfOX))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfOY, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16)
+                    .addComponent(tfOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)
+                    .addComponent(tfOY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(tfSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(butPaintTruck)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout dialogTruckLayout = new javax.swing.GroupLayout(dialogTruck.getContentPane());
+        dialogTruck.getContentPane().setLayout(dialogTruckLayout);
+        dialogTruckLayout.setHorizontalGroup(
+            dialogTruckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogTruckLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        dialogTruckLayout.setVerticalGroup(
+            dialogTruckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -194,7 +294,7 @@ public class Display extends javax.swing.JFrame {
         );
         panelDrawingAreaLayout.setVerticalGroup(
             panelDrawingAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 498, Short.MAX_VALUE)
+            .addGap(0, 480, Short.MAX_VALUE)
         );
 
         panelSetUp.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -278,17 +378,11 @@ public class Display extends javax.swing.JFrame {
         bg2D.add(butTriangle);
         butTriangle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/triangle.png"))); // NOI18N
 
-        bg2D.add(butRhomb);
-        butRhomb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/rhomb-outline.png"))); // NOI18N
-
         bg2D.add(butCircle);
         butCircle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/circle.png"))); // NOI18N
 
         bg2D.add(butEllipse);
         butEllipse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/ellipse.png"))); // NOI18N
-
-        bg2D.add(but);
-        but.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/trapeze.png"))); // NOI18N
 
         javax.swing.GroupLayout panel2DShapeLayout = new javax.swing.GroupLayout(panel2DShape);
         panel2DShape.setLayout(panel2DShapeLayout);
@@ -304,14 +398,9 @@ public class Display extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(butCircle, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel2DShapeLayout.createSequentialGroup()
-                        .addGroup(panel2DShapeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panel2DShapeLayout.createSequentialGroup()
-                                .addComponent(butTriangle, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(butRhomb, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(butEllipse, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(but, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(butTriangle, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(butEllipse, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -326,10 +415,7 @@ public class Display extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel2DShapeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(butTriangle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(butRhomb, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(butEllipse, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(but, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -369,7 +455,7 @@ public class Display extends javax.swing.JFrame {
                 .addComponent(panel2DShape, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(but2DPaint)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         panelSetUp.add(panel2D, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 460));
@@ -388,35 +474,34 @@ public class Display extends javax.swing.JFrame {
 
         jLabel13.setText("Cao:");
 
-        jLabel11.setText("Dài/R:");
+        jLabel11.setText("Dài:");
 
         javax.swing.GroupLayout panel3DInputLayout = new javax.swing.GroupLayout(panel3DInput);
         panel3DInput.setLayout(panel3DInputLayout);
         panel3DInputLayout.setHorizontalGroup(
             panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel3DInputLayout.createSequentialGroup()
+            .addGroup(panel3DInputLayout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
                     .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tf3D_X)
+                    .addComponent(tf3D_X, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(tf3D_Z)
-                    .addComponent(tf3D_Rong, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tf3D_Rong))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tf3D_y)
                     .addComponent(tf3D_Dai)
-                    .addComponent(tf3D_Cao, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tf3D_Cao, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         panel3DInputLayout.setVerticalGroup(
             panel3DInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,6 +598,181 @@ public class Display extends javax.swing.JFrame {
 
         panelSetUp.add(panel3D, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 460));
 
+        panel2D1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "2D", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 15))); // NOI18N
+
+        panel2DStart1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Start", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 15))); // NOI18N
+
+        jLabel8.setText("X:");
+
+        jLabel9.setText("Y:");
+
+        javax.swing.GroupLayout panel2DStart1Layout = new javax.swing.GroupLayout(panel2DStart1);
+        panel2DStart1.setLayout(panel2DStart1Layout);
+        panel2DStart1Layout.setHorizontalGroup(
+            panel2DStart1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2DStart1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf2D_SX1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf2D_SY1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        panel2DStart1Layout.setVerticalGroup(
+            panel2DStart1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2DStart1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel2DStart1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(tf2D_SX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(tf2D_SY1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panel2DEnd1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "End", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 15))); // NOI18N
+
+        jLabel10.setText("X:");
+
+        jLabel14.setText("Y:");
+
+        javax.swing.GroupLayout panel2DEnd1Layout = new javax.swing.GroupLayout(panel2DEnd1);
+        panel2DEnd1.setLayout(panel2DEnd1Layout);
+        panel2DEnd1Layout.setHorizontalGroup(
+            panel2DEnd1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2DEnd1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf2D_EX1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tf2D_EY1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        panel2DEnd1Layout.setVerticalGroup(
+            panel2DEnd1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2DEnd1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel2DEnd1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(tf2D_EX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14)
+                    .addComponent(tf2D_EY1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panel2DShape1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shape", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 15))); // NOI18N
+
+        bg2D.add(butLine1);
+        butLine1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Line.png"))); // NOI18N
+
+        bg2D.add(butRectangle1);
+        butRectangle1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/rectangle.png"))); // NOI18N
+
+        bg2D.add(butTriangle1);
+        butTriangle1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/triangle.png"))); // NOI18N
+
+        bg2D.add(butRhomb1);
+        butRhomb1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/rhomb-outline.png"))); // NOI18N
+
+        bg2D.add(butCircle1);
+        butCircle1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/circle.png"))); // NOI18N
+
+        bg2D.add(butEllipse1);
+        butEllipse1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/ellipse.png"))); // NOI18N
+
+        bg2D.add(but1);
+        but1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/trapeze.png"))); // NOI18N
+
+        javax.swing.GroupLayout panel2DShape1Layout = new javax.swing.GroupLayout(panel2DShape1);
+        panel2DShape1.setLayout(panel2DShape1Layout);
+        panel2DShape1Layout.setHorizontalGroup(
+            panel2DShape1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2DShape1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel2DShape1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel2DShape1Layout.createSequentialGroup()
+                        .addComponent(butLine1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(butRectangle1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(butCircle1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel2DShape1Layout.createSequentialGroup()
+                        .addGroup(panel2DShape1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel2DShape1Layout.createSequentialGroup()
+                                .addComponent(butTriangle1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(butRhomb1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(butEllipse1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(but1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        panel2DShape1Layout.setVerticalGroup(
+            panel2DShape1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2DShape1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel2DShape1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(butRectangle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butLine1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butCircle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel2DShape1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(butTriangle1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butRhomb1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butEllipse1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(but1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        but2DPaint1.setText("Paint");
+        but2DPaint1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                but2DPaint1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panel2D1Layout = new javax.swing.GroupLayout(panel2D1);
+        panel2D1.setLayout(panel2D1Layout);
+        panel2D1Layout.setHorizontalGroup(
+            panel2D1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator6)
+            .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(panel2DShape1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panel2D1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(but2DPaint1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(panel2DEnd1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel2DStart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        panel2D1Layout.setVerticalGroup(
+            panel2D1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2D1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panel2DStart1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panel2DEnd1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panel2DShape1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(but2DPaint1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelSetUp.add(panel2D1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 460));
+
         javax.swing.GroupLayout panelDrawingLayout = new javax.swing.GroupLayout(panelDrawing);
         panelDrawing.setLayout(panelDrawingLayout);
         panelDrawingLayout.setHorizontalGroup(
@@ -527,8 +787,8 @@ public class Display extends javax.swing.JFrame {
             panelDrawingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDrawingLayout.createSequentialGroup()
                 .addGroup(panelDrawingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelDrawingArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelSetUp, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
+                    .addComponent(panelDrawingArea, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                    .addComponent(panelSetUp, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -550,6 +810,11 @@ public class Display extends javax.swing.JFrame {
         });
 
         butSetup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Setup.png"))); // NOI18N
+        butSetup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butSetupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelOperationLayout = new javax.swing.GroupLayout(panelOperation);
         panelOperation.setLayout(panelOperationLayout);
@@ -559,13 +824,10 @@ public class Display extends javax.swing.JFrame {
                 .addComponent(butOpenFile, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(butSave, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(1121, Short.MAX_VALUE))
         );
         panelOperationLayout.setVerticalGroup(
             panelOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(butSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(butOpenFile, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(butSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
@@ -577,8 +839,6 @@ public class Display extends javax.swing.JFrame {
         butMove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/crop-tool.png"))); // NOI18N
 
         butUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/undo.png"))); // NOI18N
-
-        butPaint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/paint-bucket.png"))); // NOI18N
 
         butErase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Eraser.png"))); // NOI18N
 
@@ -592,27 +852,11 @@ public class Display extends javax.swing.JFrame {
 
         cbCustomLine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DEFAULT", "DASH", "DOT", "DASHDOT", "DASHDOTDOT", "ARROW" }));
 
-        cbSym.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DEFAULT", "DYAD", "TRIAD", "TETRAD", "PENTAD", "HEXAD", "HEPTAD", "OCTAD", "NONAD", "DECAD" }));
-
-        bg_.add(rb2D);
-        rb2D.setText("2D");
-        rb2D.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rb2DActionPerformed(evt);
-            }
-        });
-
-        bg_.add(rb3D);
-        rb3D.setText("3D");
-        rb3D.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rb3DActionPerformed(evt);
-            }
-        });
-
         butRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/redo.png"))); // NOI18N
 
         butClean.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Clean.png"))); // NOI18N
+
+        butDraw1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Pencil.png"))); // NOI18N
 
         cbCoordinate.setText("Coordinate");
         cbCoordinate.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -640,7 +884,21 @@ public class Display extends javax.swing.JFrame {
 
         cbAxis.setText("Axis");
 
-        butDraw1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Pencil.png"))); // NOI18N
+        bg_.add(rb2D);
+        rb2D.setText("2D");
+        rb2D.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rb2DActionPerformed(evt);
+            }
+        });
+
+        bg_.add(rb3D);
+        rb3D.setText("3D");
+        rb3D.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rb3DActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelToolLayout = new javax.swing.GroupLayout(panelTool);
         panelTool.setLayout(panelToolLayout);
@@ -648,80 +906,67 @@ public class Display extends javax.swing.JFrame {
             panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelToolLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelToolLayout.createSequentialGroup()
-                        .addComponent(butMove, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butPaint, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butColour, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57)
-                        .addComponent(cbSym, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbGrid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelToolLayout.createSequentialGroup()
-                        .addComponent(butUndo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butRedo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butClean, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butDraw1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(butErase, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbCustomLine, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbCoordinate)))
-                .addGap(18, 18, 18)
+                .addComponent(butUndo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butRedo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butMove, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butClean, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butDraw1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butErase, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butColour, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbCustomLine, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbCoordinate)
+                    .addComponent(rb2D))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelToolLayout.createSequentialGroup()
-                        .addComponent(rb2D)
-                        .addGap(18, 18, 18)
-                        .addComponent(rb3D))
-                    .addComponent(cbAxis))
-                .addGap(229, 229, 229))
+                        .addComponent(cbGrid, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbAxis))
+                    .addComponent(rb3D))
+                .addGap(87, 87, 87))
         );
         panelToolLayout.setVerticalGroup(
             panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelToolLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(butUndo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(butRedo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(butClean, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butMove, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(butDraw1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(butErase, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbCustomLine, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cbCoordinate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rb2D, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rb3D, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbSym)
-                    .addGroup(panelToolLayout.createSequentialGroup()
-                        .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(butMove, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(butSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(butColour, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(butPaint, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbGrid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbAxis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(butClean, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cbCustomLine, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(butColour, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelToolLayout.createSequentialGroup()
+                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbCoordinate)
+                    .addComponent(cbGrid)
+                    .addComponent(cbAxis))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rb2D)
+                    .addComponent(rb3D))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         panelObject.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Object", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 15))); // NOI18N
 
         butA1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/car.png"))); // NOI18N
-        butA1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                butA1ActionPerformed(evt);
-            }
-        });
 
         butA2.setText("C");
         butA2.addActionListener(new java.awt.event.ActionListener() {
@@ -781,12 +1026,12 @@ public class Display extends javax.swing.JFrame {
         panelHeadLayout.setHorizontalGroup(
             panelHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeadLayout.createSequentialGroup()
-                .addComponent(panelTool, javax.swing.GroupLayout.PREFERRED_SIZE, 593, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelTool, javax.swing.GroupLayout.PREFERRED_SIZE, 752, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(panelObject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(153, 153, 153))
         );
         panelHeadLayout.setVerticalGroup(
             panelHeadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -887,14 +1132,14 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_cbCoordinateStateChanged
 
     private void butColourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butColourActionPerformed
-        Color color = JColorChooser.showDialog(this, "Choose Color ", Color.white);
+        color = JColorChooser.showDialog(this, "Choose Color ", Color.white);
         butColour.setBackground(color);
     }//GEN-LAST:event_butColourActionPerformed
 
     private void butOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butOpenFileActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("image", "jpg", "png");
-        fileChooser.setFileFilter(imageFilter);
+        JFileChooser fileChooser = new JFileChooser(new File("c:\\"));
+        fileChooser.setDialogTitle("Choose a file");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("image", "png"));
         fileChooser.setMultiSelectionEnabled(false);
 
         int x = fileChooser.showDialog(this, "Chose file");
@@ -902,7 +1147,6 @@ public class Display extends javax.swing.JFrame {
             File file = fileChooser.getSelectedFile();
             String pathFile = file.getAbsolutePath().replace("//", "--");
             try {
-
                 paintComponent(panelDrawingArea.getGraphics(),new ImageIcon(pathFile));
             } catch (Exception e) {
             }
@@ -918,7 +1162,20 @@ public class Display extends javax.swing.JFrame {
  
 
     private void butSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSaveActionPerformed
-
+        JFileChooser fileSave = new JFileChooser(new File("c:\\"));
+        fileSave.setDialogTitle("Save a file");
+        fileSave.setFileFilter(new FileNameExtensionFilter("image", "png"));
+        int result = fileSave.showSaveDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            BufferedImage image = new BufferedImage(panelDrawingArea.getWidth(),panelDrawingArea.getHeight(), BufferedImage.TYPE_INT_RGB);
+            File file = fileSave.getSelectedFile();
+            String fileName = file.getAbsolutePath();
+            try {
+                File img = new File(fileName);
+                ImageIO.write(image, "png", file);
+            } catch (Exception e) {
+            }
+        } 
     }//GEN-LAST:event_butSaveActionPerformed
 
     private void but2DPaintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_but2DPaintActionPerformed
@@ -1011,6 +1268,10 @@ public class Display extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_but3DPaintActionPerformed
 
+    private void but2DPaint1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_but2DPaint1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_but2DPaint1ActionPerformed
+
     private void butA2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butA2ActionPerformed
         // TODO add your handling code here:
         Point O = new Point(ConvertX(0), ConvertY(10));
@@ -1018,12 +1279,9 @@ public class Display extends javax.swing.JFrame {
         wm.draw(panelDrawingArea.getGraphics());
     }//GEN-LAST:event_butA2ActionPerformed
 
-    private void butA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butA1ActionPerformed
+    private void butSetupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butSetupActionPerformed
         // TODO add your handling code here:
-        Point O = new Point(ConvertX(0), ConvertY(0));
-        Truck t = new Truck(O, 90, 5);
-        t.draw(panelDrawingArea.getGraphics());
-    }//GEN-LAST:event_butA1ActionPerformed
+    }//GEN-LAST:event_butSetupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1071,57 +1329,78 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.ButtonGroup bg2D;
     private javax.swing.ButtonGroup bg3D;
     private javax.swing.ButtonGroup bg_;
-    private javax.swing.JToggleButton but;
+    private javax.swing.JToggleButton but1;
     private javax.swing.JButton but2DPaint;
+    private javax.swing.JButton but2DPaint1;
     private javax.swing.JButton but3DPaint;
     private javax.swing.JButton butA1;
     private javax.swing.JButton butA2;
     private javax.swing.JButton butA3;
     private javax.swing.JButton butA4;
     private javax.swing.JToggleButton butCircle;
+    private javax.swing.JToggleButton butCircle1;
     private javax.swing.JButton butClean;
     private javax.swing.JButton butColour;
     private javax.swing.JToggleButton butCone;
     private javax.swing.JToggleButton butCube;
     private javax.swing.JButton butDraw1;
     private javax.swing.JToggleButton butEllipse;
+    private javax.swing.JToggleButton butEllipse1;
     private javax.swing.JButton butErase;
     private javax.swing.JToggleButton butLine;
+    private javax.swing.JToggleButton butLine1;
     private javax.swing.JButton butMove;
     private javax.swing.JButton butOpenFile;
-    private javax.swing.JButton butPaint;
+    private javax.swing.JButton butPaintTruck;
     private javax.swing.JToggleButton butRectangle;
+    private javax.swing.JToggleButton butRectangle1;
     private javax.swing.JButton butRedo;
-    private javax.swing.JToggleButton butRhomb;
+    private javax.swing.JToggleButton butRhomb1;
     private javax.swing.JButton butSave;
     private javax.swing.JButton butSelect;
     private javax.swing.JButton butSetup;
     private javax.swing.JToggleButton butSphere;
     private javax.swing.JToggleButton butTriangle;
+    private javax.swing.JToggleButton butTriangle1;
     private javax.swing.JButton butUndo;
     private javax.swing.JCheckBox cbAxis;
     private javax.swing.JCheckBox cbCoordinate;
     private javax.swing.JComboBox<String> cbCustomLine;
     private javax.swing.JCheckBox cbGrid;
-    private javax.swing.JComboBox<String> cbSym;
+    private javax.swing.JDialog dialogTruck;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JPanel panel2D;
+    private javax.swing.JPanel panel2D1;
     private javax.swing.JPanel panel2DEnd;
+    private javax.swing.JPanel panel2DEnd1;
     private javax.swing.JPanel panel2DShape;
+    private javax.swing.JPanel panel2DShape1;
     private javax.swing.JPanel panel2DStart;
+    private javax.swing.JPanel panel2DStart1;
     private javax.swing.JPanel panel3D;
     private javax.swing.JPanel panel3DInput;
     private javax.swing.JPanel panel3DShape;
@@ -1136,15 +1415,22 @@ public class Display extends javax.swing.JFrame {
     private javax.swing.JRadioButton rb2D;
     private javax.swing.JRadioButton rb3D;
     private javax.swing.JTextField tf2D_EX;
+    private javax.swing.JTextField tf2D_EX1;
     private javax.swing.JTextField tf2D_EY;
+    private javax.swing.JTextField tf2D_EY1;
     private javax.swing.JTextField tf2D_SX;
+    private javax.swing.JTextField tf2D_SX1;
     private javax.swing.JTextField tf2D_SY;
+    private javax.swing.JTextField tf2D_SY1;
     private javax.swing.JTextField tf3D_Cao;
     private javax.swing.JTextField tf3D_Dai;
     private javax.swing.JTextField tf3D_Rong;
     private javax.swing.JTextField tf3D_X;
     private javax.swing.JTextField tf3D_Z;
     private javax.swing.JTextField tf3D_y;
+    private javax.swing.JTextField tfOX;
+    private javax.swing.JTextField tfOY;
+    private javax.swing.JTextField tfSize;
     // End of variables declaration//GEN-END:variables
 
     private void setOpaque(boolean b) {
