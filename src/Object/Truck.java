@@ -113,7 +113,7 @@ public class Truck {
         l.draw(g);
         
         // Vẽ Bánh Xe
-        Circle c = c = new Circle();
+        Circle c = new Circle();
         O1 = new Point((A1.x +((r*3/2)*size)), O.y);
         O2 = new Point((C1.x +((r*3/2)*size)), O.y);
         // Bánh cuối
