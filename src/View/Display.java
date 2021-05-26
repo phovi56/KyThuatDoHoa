@@ -5,6 +5,7 @@
  */
 package View;
 
+import Shapes2D.Transform;
 import Object.Truck;
 import Object.Windmill;
 import Shapes2D.Circle;
@@ -57,6 +58,8 @@ public class Display extends javax.swing.JFrame {
     private Triangle triangle;
     private Circle circle;
     private Ellipse elip;
+    private Windmill wm;
+    private Truck t;
     
     public Display() {
         initComponents();
@@ -79,10 +82,88 @@ public class Display extends javax.swing.JFrame {
     }
 
     @Override
-    public void repaint() {
-        super.repaint(); //To change body of generated methods, choose Tools | Templates.
-        for (int i = 1; i < paint2D.size()-1; i++) {
-            paint2D.get(i).draw(panelDrawingArea.getGraphics());
+    public void paint(Graphics g) {
+        super.paint(g); //To change body of generated methods, choose Tools | Templates.
+        if(cbGrid.isSelected()){
+            new Coordinate().drawGrid(panelDrawingArea, panelDrawingArea.getGraphics());
+        }
+        if(cbCoordinate.isSelected() && rb2D.isSelected()){
+            new Coordinate().drawCoor(panelDrawingArea, panelDrawingArea.getGraphics());
+        }else if(cbCoordinate.isSelected() && rb3D.isSelected()){
+            new Coordinate3D().drawCoor(panelDrawingArea, panelDrawingArea.getGraphics());
+        }
+        
+        // Vẽ hình 2d
+        if(rangBuoc2D() == true){
+            if(butLine.isSelected()){
+                line = new Line();
+                line.init(start, end, size, color);
+                line.draw(panelDrawingArea.getGraphics());
+                paint2D.add(line);
+            }else if(butRectangle.isSelected()){
+                rect = new Rectangle();
+                rect.init(start, end, size, color);
+                rect.draw(panelDrawingArea.getGraphics());
+                paint2D.add(rect);
+            }else if(butCircle.isSelected()){
+                circle = new Circle();
+                circle.init(start, end, size, color);
+                circle.draw(panelDrawingArea.getGraphics());
+                paint2D.add(circle);
+            }else if(butTriangle.isSelected()){
+                triangle = new Triangle();
+                triangle.init(end, start, size, color);
+                triangle.draw(panelDrawingArea.getGraphics());
+                paint2D.add(triangle);                
+            }else if(butEllipse.isSelected()){
+                elip = new Ellipse();
+                elip.init(start, end, size, color);
+                elip.draw(panelDrawingArea.getGraphics());
+                paint2D.add(elip);                
+            }
+        }
+        
+        if(start != null && end !=null){
+            if (cbSym.getSelectedItem().toString().equals("TRANSLATION")) {
+                t.draw(panelDrawingArea.getGraphics());
+            } else if (cbSym.getSelectedItem().toString().equals("SCALE")) {
+                t.drawScale(panelDrawingArea.getGraphics(), (float) 0.5, (float) 0.5);
+            }else if(cbSym.getSelectedItem().toString().equals("ROTATE")){
+                wm.drawRotate(panelDrawingArea.getGraphics(), 45);
+            }
+        }
+        else if(cbSym.getSelectedItem().toString().equals("ROTATE")){
+                wm.drawRotate(panelDrawingArea.getGraphics(), 45);
+            }
+        
+        // Vẽ hình 3d
+        Graphics2D g2d = (Graphics2D) panelDrawingArea.getGraphics();
+        if (rangBuoc3D() == true) {
+            if (butCube.isSelected()) {
+                HinhHop hh = new HinhHop();
+                hh.setX(Integer.parseInt(tf3D_X.getText()));
+                hh.setY(Integer.parseInt(tf3D_y.getText()));
+                hh.setZ(Integer.parseInt(tf3D_Z.getText()));
+                hh.setDai(Integer.parseInt(tf3D_Dai.getText()));
+                hh.setRong(Integer.parseInt(tf3D_Rong.getText()));
+                hh.setCao(Integer.parseInt(tf3D_Cao.getText()));
+                hh.draw(g2d);
+            } else if (butSphere.isSelected()) {
+                HinhCau hc = new HinhCau();
+                hc.setX(Integer.parseInt(tf3D_X.getText()));
+                hc.setY(Integer.parseInt(tf3D_y.getText()));
+                hc.setZ(Integer.parseInt(tf3D_Z.getText()));
+                hc.setR(Integer.parseInt(tf3D_Dai.getText()));
+                hc.draw(g2d);
+            } else if (butCone.isSelected()) {
+                HinhNon hn = new HinhNon();
+                hn.setX(Integer.parseInt(tf3D_X.getText()));
+                hn.setY(Integer.parseInt(tf3D_y.getText()));
+                hn.setZ(Integer.parseInt(tf3D_Z.getText()));
+                hn.setR(Integer.parseInt(tf3D_Dai.getText()));
+                hn.setCao(Integer.parseInt(tf3D_Cao.getText()));
+                hn.draw(g2d);
+            }
         }
     }
     
@@ -592,7 +673,7 @@ public class Display extends javax.swing.JFrame {
 
         cbCustomLine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DEFAULT", "DASH", "DOT", "DASHDOT", "DASHDOTDOT", "ARROW" }));
 
-        cbSym.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DEFAULT", "DYAD", "TRIAD", "TETRAD", "PENTAD", "HEXAD", "HEPTAD", "OCTAD", "NONAD", "DECAD" }));
+        cbSym.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TRANSLATION", "ROTATE", "SCALE", "SYMMYETRY" }));
 
         bg_.add(rb2D);
         rb2D.setText("2D");
@@ -847,35 +928,21 @@ public class Display extends javax.swing.JFrame {
         panel2D.setVisible(true);
         panel3D.setVisible(false);
         if(cbCoordinate.isSelected()){
-            panelDrawingArea.repaint(panelDrawingArea.getHeight()/2, panelDrawingArea.getWidth()/2, panelDrawingArea.getWidth(), panelDrawingArea.getHeight());
-            new Coordinate().drawCoor(panelDrawingArea, panelDrawingArea.getGraphics());
+            repaint();
         }
     }//GEN-LAST:event_rb2DActionPerformed
 
     private void rb3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rb3DActionPerformed
         panel2D.setVisible(false);
         panel3D.setVisible(true);
-        panelDrawingArea.repaint();
-        try {
-            Thread.sleep(10);
-            if(cbCoordinate.isSelected()){
-            new Coordinate3D().drawCoor(panelDrawingArea, panelDrawingArea.getGraphics());
+        if(cbCoordinate.isSelected()){
+            repaint();
         }
-        } catch (Exception e) {
-        }
-        
     }//GEN-LAST:event_rb3DActionPerformed
 
     private void cbCoordinateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCoordinateActionPerformed
         // TODO add your handling code here:
-        if(cbCoordinate.isSelected() && rb2D.isSelected()){
-            Coordinate coor = new Coordinate();
-            coor.drawCoor(panelDrawingArea, panelDrawingArea.getGraphics());
-        }else if(cbCoordinate.isSelected() && rb3D.isSelected()){
-            new Coordinate3D().drawCoor(panelDrawingArea, panelDrawingArea.getGraphics());
-        }else{
-            panelDrawingArea.repaint();
-        }
+        repaint();
     }//GEN-LAST:event_cbCoordinateActionPerformed
 
     private void cbCoordinateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cbCoordinateFocusLost
@@ -922,44 +989,36 @@ public class Display extends javax.swing.JFrame {
     }//GEN-LAST:event_butSaveActionPerformed
 
     private void but2DPaintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_but2DPaintActionPerformed
-        start = new Point();
-        end = new Point();
-        start.x = ConvertX(Integer.parseInt(tf2D_SX.getText()));
-        start.y = ConvertY(Integer.parseInt(tf2D_SY.getText()));
-        end.x = ConvertX(Integer.parseInt(tf2D_EX.getText()));
-        end.y = ConvertY(Integer.parseInt(tf2D_EY.getText()));
-        if(rangBuoc2D() == true){
-            if(butLine.isSelected()){
-                line = new Line();
-                line.init(start, end, size, color);
-                line.draw(panelDrawingArea.getGraphics());
-                paint2D.add(line);
-            }else if(butRectangle.isSelected()){
-                rect = new Rectangle();
-                rect.init(start, end, size, color);
-                rect.draw(panelDrawingArea.getGraphics());
-                paint2D.add(rect);
-            }else if(butCircle.isSelected()){
-                circle = new Circle();
-                circle.init(start, end, size, color);
-                circle.draw(panelDrawingArea.getGraphics());
-                paint2D.add(circle);
-            }else if(butTriangle.isSelected()){
-                triangle = new Triangle();
-                triangle.init(end, start, size, color);
-                triangle.draw(panelDrawingArea.getGraphics());
-                paint2D.add(triangle);                
-            }else if(butEllipse.isSelected()){
-                elip = new Ellipse();
-                elip.init(start, end, size, color);
-                elip.draw(panelDrawingArea.getGraphics());
-                paint2D.add(elip);                
-            }
+//        if(rangBuoc2D() == true){
+//            start = new Point();
+//            end = new Point();
+//            start.x = ConvertX(Integer.parseInt(tf2D_SX.getText()));
+//            start.y = ConvertY(Integer.parseInt(tf2D_SY.getText()));
+//            end.x = ConvertX(Integer.parseInt(tf2D_EX.getText()));
+//            end.y = ConvertY(Integer.parseInt(tf2D_EY.getText()));
+//            repaint();
+//        }
+//        else{
+//            JOptionPane.showMessageDialog(this,"Vui lòng điển đủ tọa độ" );
+//        }
+        
+        if(cbSym.getSelectedItem().toString().equals("TRANSLATION")){
+            Transform trans = new Transform();
+            Point tr = trans.translation(t.getO(), 10, 0);
+            System.out.println(tr);
+            t.setO(new Point(tr.x, tr.y));
+            t.init();
+//            t.draw(panelDrawingArea.getGraphics());
+            repaint();
+        }else if(cbSym.getSelectedItem().toString().equals("ROTATE")){
+            
+            repaint();
+        }else if(cbSym.getSelectedItem().toString().equals("SCALE")){
+            repaint();
+        }else if(cbSym.getSelectedItem().toString().equals("SYMMYETRY")){
+//            t.setO(new Point(ConvertX(tr.x), ConvertY(tr.y)));
+            t.drawSym(panelDrawingArea.getGraphics());
         }
-        else{
-            JOptionPane.showMessageDialog(this,"Vui lòng điển đủ tọa độ" );
-        }
-        //panelDrawingArea.getGraphics().fillRect(panelDrawingArea.getWidth()/2,panelDrawingArea.getHeight()/2, 5, 5);
     }//GEN-LAST:event_but2DPaintActionPerformed
 
     private void panelDrawingAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawingAreaMouseClicked
@@ -972,56 +1031,26 @@ public class Display extends javax.swing.JFrame {
 
     private void cbGridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbGridActionPerformed
         // TODO add your handling code here:
-        new Coordinate().drawGrid(panelDrawingArea, panelDrawingArea.getGraphics(), cbGrid.isSelected());
-//        new Coordinate().drawGrid(panelDrawingArea, panelDrawingArea.getGraphics(), cbGrid.isSelected());
+        repaint();
     }//GEN-LAST:event_cbGridActionPerformed
 
     private void but3DPaintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_but3DPaintActionPerformed
-    Graphics2D g = (Graphics2D)panelDrawingArea.getGraphics();
-    if(rangBuoc3D() == true){
-            if(butCube.isSelected()){
-               HinhHop hh = new HinhHop();
-        hh.setX(Integer.parseInt(tf3D_X.getText()));
-        hh.setY(Integer.parseInt(tf3D_y.getText())); 
-        hh.setZ(Integer.parseInt(tf3D_Z.getText()));
-        hh.setDai(Integer.parseInt(tf3D_Dai.getText())); 
-        hh.setRong(Integer.parseInt(tf3D_Rong.getText())); 
-        hh.setCao(Integer.parseInt(tf3D_Cao.getText()));
-        hh.draw(g);
-            }else if(butSphere.isSelected()){
-                HinhCau hc = new HinhCau();
-                hc.setX(Integer.parseInt(tf3D_X.getText()));
-                hc.setY(Integer.parseInt(tf3D_y.getText())); 
-                hc.setZ(Integer.parseInt(tf3D_Z.getText()));
-                hc.setR(Integer.parseInt(tf3D_Dai.getText()));
-                hc.draw(g);
-            }
-            else if(butCone.isSelected()){
-                HinhNon hn = new HinhNon();
-                hn.setX(Integer.parseInt(tf3D_X.getText()));
-                hn.setY(Integer.parseInt(tf3D_y.getText())); 
-                hn.setZ(Integer.parseInt(tf3D_Z.getText()));
-                hn.setR(Integer.parseInt(tf3D_Dai.getText()));
-                hn.setCao(Integer.parseInt(tf3D_Cao.getText()));
-                hn.draw(g);
-            }
-        }
-       
         
-        // TODO add your handling code here:
     }//GEN-LAST:event_but3DPaintActionPerformed
 
     private void butA2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butA2ActionPerformed
         // TODO add your handling code here:
         Point O = new Point(ConvertX(0), ConvertY(10));
-        Windmill wm = new Windmill(O, size, 40, Color.blue);
+        wm = new Windmill(O, size, 40, Color.blue);
+        wm.init();
         wm.draw(panelDrawingArea.getGraphics());
     }//GEN-LAST:event_butA2ActionPerformed
 
     private void butA1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butA1ActionPerformed
         // TODO add your handling code here:
-        Point O = new Point(ConvertX(0), ConvertY(0));
-        Truck t = new Truck(O, 90, 5);
+        Point O = new Point(ConvertX(0), ConvertY(10));
+        t = new Truck(O, 70, 5);
+        t.init();
         t.draw(panelDrawingArea.getGraphics());
     }//GEN-LAST:event_butA1ActionPerformed
 

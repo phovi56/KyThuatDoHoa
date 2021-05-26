@@ -92,14 +92,14 @@ public class HinhHop extends Line {
         //các điểm đáy trên
         Diem3D a1 = new Diem3D(x, y, z);
         Diem3D b1 = new Diem3D(x + dai, y, z);
-        Diem3D c1 = new Diem3D(x + dai, y + rong, z);
-        Diem3D d1 = new Diem3D(x, y + rong, z);
+        Diem3D c1 = new Diem3D(x + dai, y , z+ rong);
+        Diem3D d1 = new Diem3D(x, y , z +rong);
 
         //các điểm đáy dưới
-        Diem3D a2 = new Diem3D(x, y, z + cao);
-        Diem3D b2 = new Diem3D(x + dai, y, z + cao);
-        Diem3D d2 = new Diem3D(x, y + rong, z + cao);
-        Diem3D c2 = new Diem3D(x + dai, y + rong, z + cao);
+        Diem3D a2 = new Diem3D(x, y +cao, z );
+        Diem3D b2 = new Diem3D(x + dai, y +cao, z );
+        Diem3D d2 = new Diem3D(x, y + cao, z + rong);
+        Diem3D c2 = new Diem3D(x + dai, y + cao, z + rong);
 
         //chuyển đổi sang 2D bằng phép chiếu Cabinet
         Point A1 = Cabinet.chieu(a1.getX(), a1.getY(), a1.getZ());

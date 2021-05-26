@@ -19,8 +19,8 @@ public class Transform {
         matrix[1] = A.y;
         matrix[2] = 1;
         float[][] matrixTrans;// ma trận tịnh tiến
-        matrixTrans = new float[][]{{0, 0, 0},
-                                    {0, 0, 0}, 
+        matrixTrans = new float[][]{{1, 0, 0},
+                                    {0, 1, 0}, 
                                     {dx, dy, 1}};
         float[] matrixRS = new Matrix().matrixMul(3, matrix, matrixTrans);
         rs.x = (int)matrixRS[0];
@@ -50,8 +50,12 @@ public class Transform {
         matrix[0] = A.x;
         matrix[1] = A.y;
         matrix[2] = 1;
-        float[][] tt = new float[][]{{1, 0, 0}, {0, 1, 0}, {-O.x, -O.y, 1}};
-        float[][] tt1 = new float[][]{{1, 0, 0}, {0, 1, 0}, {O.x, O.y, 1}};
+        float[][] tt = new float[][]{{1, 0, 0}, 
+                                     {0, 1, 0}, 
+                                     {-O.x, -O.y, 1}};
+        float[][] tt1 = new float[][]{{1, 0, 0},
+                                      {0, 1, 0}, 
+                                      {O.x, O.y, 1}};
         float[][] q = new float[][]{{(float) Math.cos(angle), (float) Math.sin(angle), 0}, 
                                     {(float) (-Math.sin(angle)), (float) Math.cos(angle), 0}, 
                                     {0, 0, 1}};
@@ -64,7 +68,7 @@ public class Transform {
         return rs;
     }
     
-    public Point scale(Point A, float sx, float sy){// Tỉ lệ
+    public Point scale(Point A, Point O, float sx, float sy){// Tỉ lệ
         Point rs = new Point();
         float[] matrix = new float[3];
         matrix[0] = A.x;
@@ -75,13 +79,13 @@ public class Transform {
                                     {0, sy, 0}, 
                                     {0, 0, 1}};
         float[] matrixRS = new Matrix().matrixMul(3, matrix, matrixTrans);
-        rs.x = (int) matrixRS[0];
-        rs.y = (int) matrixRS[1];
+        rs.x = (int) (matrixRS[0] - (sx - 1) * O.getX());
+        rs.y = (int) (matrixRS[1] - (sy - 1) * O.getY());
         return rs;
     }
     
     // ------------------- Đối xứng ------------------
-    public Point symmetryX(Point A){ 
+    public Point reflection(Point A){ 
         Point rs = new Point();
         float[] matrix = new float[3];
         matrix[0] = A.x;

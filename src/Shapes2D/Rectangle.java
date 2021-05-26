@@ -165,10 +165,17 @@ public class Rectangle implements Shape2D{
 
     @Override
     public void init(Point start, Point end, int size, Color color) {
-        this.setA(start);
-        this.setB(new Point(end.x, start.y));
-        this.setC(end);
-        this.setD(new Point(start.x, end.y));
+        if(Math.abs(start.y - end.y) == Math.abs(start.x-end.x)){
+            this.setA(start);
+            this.setB(new Point(end.x, start.y));
+            this.setC(end);
+            this.setD(new Point(start.x, end.y));
+        }else{
+            this.setA(start);
+            this.setB(new Point(end.x, start.y));
+            this.setC(end);
+            this.setD(new Point(start.x, end.y));
+        }
         this.setColor(color);
         this.setSize(size);
     }

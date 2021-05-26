@@ -947,17 +947,11 @@
             <Component class="javax.swing.JComboBox" name="cbSym">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="10">
-                    <StringItem index="0" value="DEFAULT"/>
-                    <StringItem index="1" value="DYAD"/>
-                    <StringItem index="2" value="TRIAD"/>
-                    <StringItem index="3" value="TETRAD"/>
-                    <StringItem index="4" value="PENTAD"/>
-                    <StringItem index="5" value="HEXAD"/>
-                    <StringItem index="6" value="HEPTAD"/>
-                    <StringItem index="7" value="OCTAD"/>
-                    <StringItem index="8" value="NONAD"/>
-                    <StringItem index="9" value="DECAD"/>
+                  <StringArray count="4">
+                    <StringItem index="0" value="TRANSLATION"/>
+                    <StringItem index="1" value="ROTATE"/>
+                    <StringItem index="2" value="SCALE"/>
+                    <StringItem index="3" value="SYMMYETRY"/>
                   </StringArray>
                 </Property>
               </Properties>

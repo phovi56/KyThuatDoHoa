@@ -95,7 +95,7 @@ public class Circle implements Shape2D{
         Oy = (A.y+B.y)/2;
         putPixel(Ox, Oy, g, color);
         while(x<=y){
-            put8Pixel(Ox, Oy, x, y, g, Color.BLUE);
+            put8Pixel(Ox, Oy, x, y, g, color);
             if(p<0) p = p+4*x+6;
             else{
                 p = p + 4*(x-y) + 10;

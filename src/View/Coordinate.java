@@ -25,27 +25,16 @@ public class Coordinate extends JPanel{
         
     }
     
-    public void drawGrid(JPanel panel, Graphics g, boolean flag){
+    public void drawGrid(JPanel panel, Graphics g){
         g.setColor(Color.lightGray);
         int w = panel.getWidth();
         int h = panel.getHeight();
-        
-        if(flag){
-            for(int i = 1; i < w / pixel; i++) {
-                if(i!= w/2) {
-                    g.drawLine(i * pixel, 0, i * pixel, h);
-                }
-                g.drawLine(0, i * pixel, w, i * pixel);
+       
+        for (int i = 1; i < w / pixel; i++) {
+            if (i != w / 2) {
+                g.drawLine(i * pixel, 0, i * pixel, h);
             }
-        }else if(!flag){
-            for(int i = 1; i < w / pixel; i++) {
-                if(i!= w/2) {
-//                    g.drawLine(i * pixel, 0, i * pixel, h);
-                    panel.repaint(i * pixel, 0, i * pixel, h);
-                }
-//                g.drawLine(0, i * pixel, w, i * pixel);
-                panel.repaint(0, i * pixel, w, i * pixel);
-            }
+            g.drawLine(0, i * pixel, w, i * pixel);
         }
     }
 }

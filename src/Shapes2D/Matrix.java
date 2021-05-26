@@ -17,7 +17,7 @@ public class Matrix {
         for(int i =0; i<n; i++){
             rs[i]=0;
             for(int j=0; j<n; j++){
-                rs[i] += a[j]*b[j][i];
+                rs[i] += (a[j]*b[j][i]);
             }
         }
         return rs;
